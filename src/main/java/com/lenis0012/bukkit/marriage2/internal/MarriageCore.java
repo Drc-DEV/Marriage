@@ -95,24 +95,15 @@ public class MarriageCore extends MarriageBase {
 
     private void hookPlotSquared() {
         try {
-            getLogger().log(Level.INFO, "Attempting to hook using PlotSquared v5 API.");
-            Class.forName("com.plotsquared.core.api.PlotAPI");
-            register(new V5PlotSquaredListener());
+            getLogger().log(Level.INFO, "Attempting to hook using PlotSquared v6 API.");
+            Class.forName("com.plotsquared.core.PlotAPI");
+            register(new PlotSquaredListener());
             getLogger().log(Level.INFO, "Success! Auto-trust has been enabled.");
             return;
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
 
-        try {
-            getLogger().log(Level.INFO, "Attempting to hook using PlotSquared legacy API.");
-            Class.forName("com.intellectualcrafters.plot.PS");
-            register(new LegacyPlotSquaredListener());
-            getLogger().log(Level.INFO, "Success! Auto-trust has been enabled.");
-            return;
-        } catch (Exception e) {
-        }
-
-        getLogger().log(Level.WARNING, "Failed to hook with PlotSquared, please use v5 for full support.");
+        getLogger().log(Level.WARNING, "Failed to hook with PlotSquared, please use v6 for full support.");
     }
 
     @Register(name = "commands", type = Register.Type.ENABLE)
@@ -149,9 +140,6 @@ public class MarriageCore extends MarriageBase {
     @Register(name = "converter", type = Register.Type.ENABLE, priority = 10)
     public void loadConverter() {
         DataConverter converter = new DataConverter(this);
-        if(converter.isOutdated()) {
-            converter.convert();
-        }
     }
 
     @Register(name = "database", type = Register.Type.DISABLE)

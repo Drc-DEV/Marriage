@@ -36,16 +36,23 @@
         </repository>
         <!-- PlotSquared -->
         <repository>
-            <id>IntellectualSites</id>
-            <url>https://mvn.intellectualsites.com/content/groups/public/</url>
+            <id>intellectualsites snapshots</id>
+            <url>https://mvn.intellectualsites.com/content/repositories/snapshots/</url>
         </repository>
     </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>apache.snapshots</id>
+            <url>https://repository.apache.org/snapshots/</url>
+        </pluginRepository>
+    </pluginRepositories>
 
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.13.2-R0.1-SNAPSHOT</version>
+            <version>1.18.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -66,20 +73,25 @@
             <version>1.7</version>
             <scope>provided</scope>
         </dependency>
-        <!-- PlotSquared Legacy (before v4)-->
-        <dependency>
-            <groupId>com.plotsquared.bukkit</groupId>
-            <artifactId>PlotSquared</artifactId>
-            <version>3.3.3</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/PlotSquared.jar</systemPath>
-        </dependency>
-        <!-- PlotSquared v5 -->
+        <!-- PlotSquared Core API -->
         <dependency>
             <groupId>com.plotsquared</groupId>
-            <artifactId>PlotSquared</artifactId>
-            <version>5.1</version>
+            <artifactId>PlotSquared-Core</artifactId>
+            <version>6.2.1</version>
             <scope>provided</scope>
+        </dependency>
+        <!-- PlotSquared Bukkit API -->
+        <dependency>
+            <groupId>com.plotsquared</groupId>
+            <artifactId>PlotSquared-Bukkit</artifactId>
+            <version>6.2.1</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>PlotSquared-Core</artifactId>
+                    <groupId>*</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
@@ -149,15 +161,16 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>16</source>
+                    <target>16</target>
                     <showWarnings>true</showWarnings>
                     <showDeprecation>false</showDeprecation> <!-- TODO: Change back to true when setItemInHand fixed -->
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.3</version>
+                <version>3.3.1-SNAPSHOT</version>
                 <executions>
                     <execution>
                         <id>general</id>
@@ -175,6 +188,10 @@
                                 <relocation>
                                     <pattern>com.lenis0012.updater</pattern>
                                     <shadedPattern>com.lenis0012.bukkit.marriage2.libs.updater</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.google.code.gson</pattern>
+                                    <shadedPattern>com.lenis0012.bukkit.marriage2.libs.gson</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
